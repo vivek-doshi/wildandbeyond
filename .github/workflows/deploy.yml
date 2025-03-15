@@ -26,11 +26,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Add detailed logging to see what's happening
+      - name: Show package.json build script
+        run: cat package.json | grep build
+        
       - name: Build Angular App
         run: npm run build --if-present
-        
+      
+      # More detailed debugging steps
       - name: Debug directory structure
-        run: find dist -type d | sort
+        run: |
+          pwd
+          ls -la
+          ls -la dist || echo "No dist directory"
+          find . -type d -name "dist*" || echo "No dist directories found"
+          find . -type d | grep -i dist
 
       # Step 3: Checkout the deploy branch (create if it doesn't exist)
       - name: Checkout deploy branch
@@ -42,16 +52,18 @@ jobs:
       - name: Copy build files
         run: |
           rm -rf *  # Remove existing files to avoid stale files
-          # Try different possible output paths
-          if [ -d "dist/wildandbeyond.github.io/browser" ]; then
-            cp -r dist/wildandbeyond.github.io/browser/* .
-          elif [ -d "dist/wildandbeyond.github.io" ]; then
-            cp -r dist/wildandbeyond.github.io/* .
-          elif [ -d "dist/browser" ]; then
-            cp -r dist/browser/* .
+          
+          # Find the build output directory, wherever it is
+          BUILD_DIR=$(find .. -type d -path "*/dist*" | head -1)
+          
+          if [ -n "$BUILD_DIR" ]; then
+            echo "Found build directory at: $BUILD_DIR"
+            cp -r $BUILD_DIR/* . || echo "Failed to copy from $BUILD_DIR"
           else
-            cp -r dist/* .
+            echo "No build directory found!"
+            exit 1
           fi
+          
           ls -la  # List copied files for debugging
 
       # Step 5: Commit and push the changes
