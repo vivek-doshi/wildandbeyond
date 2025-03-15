@@ -9,7 +9,7 @@ main {
       font-weight: 400;
     }
     .avatar {
-      background-image: url(/assets/me.jpg);
+      background-image: url("/assets/me.jpg");
       width: 10rem;
       height: 10rem;
       background-size: cover;

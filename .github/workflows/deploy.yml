@@ -16,19 +16,23 @@ jobs:
         with:
           fetch-depth: 0  # Fetch full history for branch switching
 
-      # Step 2: Install Node.js and dependencies (if build is needed)
-      #- name: Setup Node.js
-       # uses: actions/setup-node@v18
-        #with:
-         # cache: 'npm'
+      # Step 2: Install Node.js and dependencies and build
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
 
-      #- name: Install dependencies
-       # run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-      #- name: Build Angular App
-       # run: npm run build --if-present
+      - name: Build Angular App
+        run: npm run build --if-present
+        
+      - name: Debug directory structure
+        run: find dist -type d | sort
 
-      # Step 3: Checkout the deploy branch (create if it doesn’t exist)
+      # Step 3: Checkout the deploy branch (create if it doesn't exist)
       - name: Checkout deploy branch
         run: |
           git fetch origin deploy || true
@@ -38,7 +42,16 @@ jobs:
       - name: Copy build files
         run: |
           rm -rf *  # Remove existing files to avoid stale files
-          cp -r dist/wildandbeyond.github.io/browser/* .
+          # Try different possible output paths
+          if [ -d "dist/wildandbeyond.github.io/browser" ]; then
+            cp -r dist/wildandbeyond.github.io/browser/* .
+          elif [ -d "dist/wildandbeyond.github.io" ]; then
+            cp -r dist/wildandbeyond.github.io/* .
+          elif [ -d "dist/browser" ]; then
+            cp -r dist/browser/* .
+          else
+            cp -r dist/* .
+          fi
           ls -la  # List copied files for debugging
 
       # Step 5: Commit and push the changes

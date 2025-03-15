@@ -42,6 +42,8 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/wildandbeyond/",
+              "deployUrl": "/wildandbeyond/",
               "budgets": [
                 {
                   "type": "initial",
