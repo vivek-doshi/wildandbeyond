@@ -1,0 +1,31 @@
+.container {
+  
+    font-weight: 4 00;
+    max-height: 81.2vh;
+    height: 81.2vh;
+    overflow: hidden;
+    text-align: center;
+    section {
+      margin: 2rem 0;
+      h1{
+          font-family: "Edu AU VIC WA NT Pre", serif;
+      }
+      
+    }
+    section.contact-content {
+      font-family: default;
+      div{
+          margin-top: 1rem;
+      }
+      i {
+        font-size: 1.3rem;
+      }
+      a {
+        color: black;
+        &:hover {
+          color: brown;
+        }
+      }
+    }
+  }
+  

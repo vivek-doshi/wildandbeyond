@@ -1,0 +1,39 @@
+.masonry-grid {
+    column-count: 4;
+    column-gap: 0;
+
+    @media (max-width: 1200px) {
+        column-count: 3;
+    }
+
+    @media (max-width: 768px) {
+        column-count: 2;
+    }
+
+    @media (max-width: 480px) {
+        column-count: 1;
+    }
+
+    .masonry-item {
+        break-inside: avoid;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        order: random(30); // Add this line to randomize order
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            transition: transform 1s ease;
+            aspect-ratio: auto;
+        }
+
+        &:hover {
+            img {
+                transform: scale(1.2);
+            }
+        }
+    }
+}
