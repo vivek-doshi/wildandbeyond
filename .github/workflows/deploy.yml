@@ -1,0 +1,51 @@
+name: Deploy Angular Build to Deploy Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the main branch
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch full history for branch switching
+
+      # Step 2: Install Node.js and dependencies (if build is needed)
+      #- name: Setup Node.js
+       # uses: actions/setup-node@v18
+        #with:
+         # cache: 'npm'
+
+      #- name: Install dependencies
+       # run: npm ci
+
+      #- name: Build Angular App
+       # run: npm run build --if-present
+
+      # Step 3: Checkout the deploy branch (create if it doesn’t exist)
+      - name: Checkout deploy branch
+        run: |
+          git fetch origin deploy || true
+          git checkout deploy || git checkout -b deploy
+
+      # Step 4: Copy build files into the deploy branch
+      - name: Copy build files
+        run: |
+          rm -rf *  # Remove existing files to avoid stale files
+          cp -r dist/wildandbeyond.github.io/browser/* .
+          ls -la  # List copied files for debugging
+
+      # Step 5: Commit and push the changes
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add .
+          git commit -m "Deploy latest build from main branch" || echo "No changes to commit"
+          git push origin deploy --force
