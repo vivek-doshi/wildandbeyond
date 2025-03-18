@@ -22,7 +22,10 @@ jobs:
         run: npm ci
 
       - name: Build Angular Project
-        run: npm run build -- --output-path=dist  # Ensure correct path
+        run: npm run build -- --output-path=dist
+
+      - name: debugging
+        run: ls dist
 
       - name: Disable Jekyll
         run: touch dist/.nojekyll  # Prevents GitHub Pages from treating it as a Jekyll project
@@ -33,7 +36,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout deploy || git checkout --orphan deploy
           rm -rf *
-          cp -r dist/* .
+          cp -r dist/wildandbeyond.github.io/browser .
           git add .
           git commit -m "Deploy Angular site [CI]"
           git push --force origin deploy
