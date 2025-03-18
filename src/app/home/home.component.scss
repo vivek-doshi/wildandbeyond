@@ -1,6 +1,8 @@
 main {
-  background: url("/assets/background.jpg") no-repeat center center fixed;
+  //background: url("/assets/background.jpg") no-repeat center center fixed;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   font-family: "Edu AU VIC WA NT Pre", serif;
   padding-top: 2rem;
   .block-intro {
@@ -9,7 +11,7 @@ main {
       font-weight: 400;
     }
     .avatar {
-      background-image: url("/assets/me.jpg");
+      //background-image: url("/assets/me.jpg");
       width: 10rem;
       height: 10rem;
       background-size: cover;
