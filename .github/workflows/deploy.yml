@@ -36,11 +36,3 @@ jobs:
           git checkout main -- dist/  # Copy only the dist/ folder
           mv dist/wildandbeyond.github.io/browser/* .  # Move contents to root
           rm -rf dist  # Remove the empty dist folder
-      
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Deploy latest build from main [CI]" || echo "No changes to commit"
-          git push --force origin deploy
