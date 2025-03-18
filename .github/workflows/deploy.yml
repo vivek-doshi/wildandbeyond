@@ -1,4 +1,4 @@
-name: Deploy Angular Build to Deploy Branch
+name: Deploy Angular to GitHub Pages
 
 on:
   push:
@@ -6,71 +6,34 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the main branch
-      - name: Checkout main branch
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Fetch full history for branch switching
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      # Step 2: Install Node.js and dependencies and build
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 22.x
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      # Add detailed logging to see what's happening
-      - name: Show package.json build script
-        run: cat package.json | grep build
-        
-      - name: Build Angular App
-        run: npm run build --if-present
-      
-      # More detailed debugging steps
-      - name: Debug directory structure
-        run: |
-          pwd
-          ls -la
-          ls -la dist || echo "No dist directory"
-          find . -type d -name "dist*" || echo "No dist directories found"
-          find . -type d | grep -i dist
+      - name: Build Angular Project
+        run: npm run build -- --output-path=dist  # Ensure correct path
 
-      # Step 3: Checkout the deploy branch (create if it doesn't exist)
-      - name: Checkout deploy branch
-        run: |
-          git fetch origin deploy || true
-          git checkout deploy || git checkout -b deploy
+      - name: Disable Jekyll
+        run: touch dist/.nojekyll  # Prevents GitHub Pages from treating it as a Jekyll project
 
-      # Step 4: Copy build files into the deploy branch
-      - name: Copy build files
+      - name: Deploy to GitHub Pages
         run: |
-          rm -rf *  # Remove existing files to avoid stale files
-          
-          # Find the build output directory, wherever it is
-          BUILD_DIR=$(find .. -type d -path "*/dist*" | head -1)
-          
-          if [ -n "$BUILD_DIR" ]; then
-            echo "Found build directory at: $BUILD_DIR"
-            cp -r $BUILD_DIR/* . || echo "Failed to copy from $BUILD_DIR"
-          else
-            echo "No build directory found!"
-            exit 1
-          fi
-          
-          ls -la  # List copied files for debugging
-
-      # Step 5: Commit and push the changes
-      - name: Commit and push changes
-        run: |
-          git config user.name "GitHub Action"
-          git config user.email "action@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout deploy || git checkout --orphan deploy
+          rm -rf *
+          cp -r dist/* .
           git add .
-          git commit -m "Deploy latest build from main branch" || echo "No changes to commit"
-          git push origin deploy --force
+          git commit -m "Deploy Angular site [CI]"
+          git push --force origin deploy
