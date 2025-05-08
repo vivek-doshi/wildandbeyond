@@ -1,25 +1,24 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container">
-    <!-- Logo on the left -->
     <a class="navbar-brand" href="#">
-      <img src="assets/logo.png" alt="Logo" class="img-fluid base-logo">
+      <img src="assets/logo.png" alt="Logo" height="80" class="d-inline-block align-top">
+      
     </a>
-    
-    <!-- Hamburger menu for mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
-    <!-- Menu items on the right -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/home']" >Home</a>
+          <a class="nav-link active" aria-current="page" [routerLink]="['/home']">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/portfolio']">Portfolio</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://wildandbeyondbirdsofindia.netlify.app/" target="_blank" rel="noopener">Projects</a>
+        </li>
+        <!-- Removed the Projects link -->
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/contact']">Contact</a>
         </li>
