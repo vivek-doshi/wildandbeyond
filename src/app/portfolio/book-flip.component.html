@@ -1,0 +1,14 @@
+<div class="book-flip-container">
+  <div class="book-pages-wrapper">
+    <div class="book-page left-page" [ngClass]="getPageClass('left')">
+      {{ pages[leftPageIndex] || '' }}
+    </div>
+    <div class="book-page right-page" [ngClass]="getPageClass('right')">
+      {{ pages[rightPageIndex] || '' }}
+    </div>
+  </div>
+  <div class="book-flip-controls">
+    <button (click)="previousPage()" [disabled]="leftPageIndex === 0 || flipping">Previous</button>
+    <button (click)="nextPage()" [disabled]="rightPageIndex >= pages.length - 1 || flipping">Next</button>
+  </div>
+</div>

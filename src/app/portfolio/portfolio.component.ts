@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BookFlipComponent } from './book-flip.component';
 
 @Component({
   selector: 'app-portfolio',
-  imports: [CommonModule],
+  imports: [CommonModule, BookFlipComponent],
   templateUrl: './portfolio.component.html',
-  styleUrl: './portfolio.component.scss'
+  styleUrls: ['./portfolio.component.scss']
 })
 export class PortfolioComponent {
-  images: number[] = Array.from({ length: 30 }, (_, index) => index + 1);
+  // Placeholder for future logic (e.g., turnjs integration)
 }
