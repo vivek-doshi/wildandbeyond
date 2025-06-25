@@ -36,7 +36,10 @@ jobs:
           git checkout main -- dist/  # Copy only the dist/ folder
           mv dist/wildandbeyond.github.io/browser/* .  # Move contents to root
           rm -rf dist  # Remove the empty dist folder
-      
+
+      - name: Copy index.html to 404.html
+        run: cp index.html 404.html
+
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
