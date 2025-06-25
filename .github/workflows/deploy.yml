@@ -24,7 +24,7 @@ jobs:
         run: npm ci  # Ensures a clean install of dependencies
 
       - name: Build Angular Project
-        run: npm run build -- --output-path=dist  # Builds the project and outputs to dist/
+        run: npm run build -- --output-path=dist --base-href /wildandbeyond/  # Builds the project and outputs to dist/
 
       - name: Switch to Deploy Branch
         run: |
